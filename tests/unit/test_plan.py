@@ -1,6 +1,10 @@
 import pytest
 
-from core.plan import apply_plan_patch
+from core.plan import InvestigationStep, PlanStep, apply_plan_patch
+
+
+def test_planstep_is_kept_as_alias_of_investigationstep():
+    assert PlanStep is InvestigationStep
 
 
 def make_plan():

@@ -136,7 +136,7 @@ Phase 0 (完成) -> Phase 1 (完成) -> Phase 2 -> Phase 3 -> Phase 4 -> Phase 5
 
 **进度追踪**：
 - [x] 2.0 安装场景遗留代码清理与骨架加固 — 删除 utils/kimi_search.py、utils/get_system_summary.py 与 installer 的 run_shell（shell=True）/ web_search 工具，Executor / Verifier 改为两个独立空工具集；agent.py 与 executor.py 重复的 _extract_json_block 收拢为 utils/text_processors.extract_tagged_json（删除安装语义抽取函数）；executor 新增 invoke_tool，幻觉工具名 / 参数不匹配回写 observation，输出不可解析判本步 failed 走 retry；plan_node 首次规划不可解析保持空计划经 route_plan abort，重规划输出非法则计划不变且计入 replan_count；Deepseek 支持 model 参数（Planner reasoner / Executor chat），QueryTongyi 按调用传 key 去掉模块级全局副作用；配置 kimi_api_key -> qwen_api_key（DASHSCOPE_API_KEY）、installation -> investigation，删除 legacy 加载与 src/ 路径注入，修复 --show-config 因 qwen_api_key_file 未定义而崩溃；requirements 补 langgraph，移除 psutil / GPUtil / socksio；CLAUDE.md 环境变量同步；新增 test_text_processors.py / test_config.py 并扩充 executor / agent / agent_loop / wiring 用例，测试 34 -> 62 全部通过
-- [ ] 2.1 状态与数据结构领域化
+- [x] 2.1 状态与数据结构领域化 — core/plan.py 的 PlanStep 更名 InvestigationStep（字段不变，PlanStep 保留为别名一版），AgentState 改 total=False 并新增 case / case_context / evidence / rule_hits / report 字段，goal / system_info 暂留以便平滑迁移（prompt 与接口领域化归 2.3）；新增 core/evidence.py：append_evidence 就地追加证据并分配单调递增不重复的 E-XXX id、resolve_refs 拆分 resolved / missing、check_closure 校验报告 findings 的 evidence_refs 闭合（缺失或不存在均返回失败明细）；新增 tests/unit/test_evidence.py 8 用例 + test_plan.py 别名用例，全量 71 测试通过
 - [ ] 2.2 公开数据集接入与固定 seed 复现
 - [ ] 2.3 Prompt 与对外接口领域化
 
